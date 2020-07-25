@@ -1,4 +1,6 @@
-package com.zz.seckill.bean;
+package com.zz.seckill.common;
+
+import com.zz.seckill.bean.AJAXResult;
 
 public abstract class BaseController {
     private ThreadLocal<AJAXResult> ajaxResult = new ThreadLocal<AJAXResult>();
