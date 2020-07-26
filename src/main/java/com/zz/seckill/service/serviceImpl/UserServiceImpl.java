@@ -16,4 +16,13 @@ public class UserServiceImpl implements UserService {
     public User findByUserName(String userName) {
         return userDao.findByUserName(userName);
     }
+
+    @Override
+    public void saveOperateLog(User user, String remoteAddr) {
+        User dbuser =userDao.findByUserName(user.getUserName());
+        dbuser.setRemoteAddr(remoteAddr);
+        userDao.save(dbuser);
+    }
+
+
 }

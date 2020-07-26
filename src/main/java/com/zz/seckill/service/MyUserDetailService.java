@@ -1,6 +1,5 @@
 package com.zz.seckill.service;
 
-import com.zz.seckill.bean.OperatorInfo;
 import com.zz.seckill.bean.Role;
 import com.zz.seckill.bean.WebResource;
 import org.springframework.security.core.userdetails.User;
@@ -17,7 +16,7 @@ import java.util.*;
 @Service
 public class MyUserDetailService implements UserDetailsService {
     @Autowired
-    private OperatorInfoService operatorInfoService;
+    private UserService userService;
 
     @Autowired
     private WebResourceService webResourceService;
@@ -25,18 +24,18 @@ public class MyUserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         //取得用户
-        OperatorInfo operatorInfo = operatorInfoService.findByUserName(userName);
-        if (operatorInfo == null) {
+        com.zz.seckill.bean.User dbuser = userService.findByUserName(userName);
+        if (dbuser == null) {
             throw new UsernameNotFoundException("UserName " + userName + " not found");
         }
         // 取得用户的权限
-        Collection<GrantedAuthority> grantedAuths = obtionGrantedAuthorities(operatorInfo);
+        Collection<GrantedAuthority> grantedAuths = obtionGrantedAuthorities(dbuser);
         Set<GrantedAuthority> grantedAuthorities = new HashSet<GrantedAuthority>();
-        for (Role role : operatorInfo.getRoles()) {
+        for (Role role : dbuser.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
         // 封装成spring security的user
-        User userDetail = new User(operatorInfo.getUserName(), operatorInfo.getPassword(),
+        User userDetail = new User(dbuser.getUserName(), dbuser.getPassword(),
                 true,//是否可用
                 true,//是否过期
                 true,//证书不过期为true
@@ -46,10 +45,10 @@ public class MyUserDetailService implements UserDetailsService {
     }
 
     // 取得用户的权限
-    private Set<GrantedAuthority> obtionGrantedAuthorities(OperatorInfo operatorInfo) {
+    private Set<GrantedAuthority> obtionGrantedAuthorities(com.zz.seckill.bean.User user) {
         List<WebResource> resources = new ArrayList<WebResource>();
         //获取用户的角色
-        Set<Role> roles = operatorInfo.getRoles();
+        Set<Role> roles = user.getRoles();
         for (Role role : roles) {
             Set<WebResource> res = role.getResources();
             for (WebResource resource : res) {

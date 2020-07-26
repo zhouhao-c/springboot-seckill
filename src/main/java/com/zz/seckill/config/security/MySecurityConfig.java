@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -49,9 +50,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         // javaconfig 配置是这样 set 进去的.
         web.securityInterceptor(myFilterSecurityInterceptor);
         web.privilegeEvaluator(customWebInvocationPrivilegeEvaluator());
-        web.
-                ignoring()
-                .antMatchers("/assets/**", "/login", "/login/success", "/kaptcha/**", "/**/*.jsp");
+        //解决静态资源被拦截的问题
+        web.ignoring().antMatchers("/resources/**");
     }
 
     @Override
@@ -97,5 +97,11 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginSuccessHandler loginSuccessHandler() {
         return new LoginSuccessHandler();
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
     }
 }

@@ -2,7 +2,6 @@ package com.zz.seckill.controller;
 
 import com.zz.seckill.bean.User;
 import com.zz.seckill.common.BaseController;
-import com.zz.seckill.service.OperatorInfoService;
 import com.zz.seckill.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -30,8 +29,6 @@ public class AdminController extends BaseController {
     private AuthenticationManager myAuthenticationManager;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    @Autowired
-    private OperatorInfoService operateLogService;
 
     @GetMapping("/productList")
     public String productList(){
@@ -68,7 +65,7 @@ public class AdminController extends BaseController {
         securityContext.setAuthentication(authentication);
         session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
         session.setAttribute("SESSION_OPERATOR", user);
-        operateLogService.saveOperateLog(user, request.getRemoteAddr());
+        userService.saveOperateLog(user, request.getRemoteAddr());
         return "admin/productList";
     }
 

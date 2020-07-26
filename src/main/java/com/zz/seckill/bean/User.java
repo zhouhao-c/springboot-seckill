@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "tb_operator_info")
+@Table(name = "tb_user")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -23,8 +23,8 @@ public class User extends BaseEntity {
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid")
-    @Column(name = "oper_id", length = 32)
-    private String operId;
+    @Column(name = "oder_id", length = 32)
+    private String oderId;
     /**
      * 用户名
      */
@@ -36,8 +36,9 @@ public class User extends BaseEntity {
     private String password;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JoinTable(name = "tb_user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles;
 
+    private String remoteAddr;
 
 }

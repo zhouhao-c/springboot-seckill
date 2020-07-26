@@ -1,10 +1,9 @@
 package com.zz.seckill.handler;
 
 
-import com.zz.seckill.bean.OperatorInfo;
+import com.zz.seckill.bean.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -16,10 +15,10 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
                                         HttpServletResponse response, Authentication authentication) throws IOException,
             ServletException {
         //获得授权后可得到用户信息   可使用OperatorInfoService进行数据库操作
-        OperatorInfo userDetails = (OperatorInfo) authentication.getPrincipal();
+        User userDetails = (User) authentication.getPrincipal();
         /* Set<SysRole> roles = userDetails.getSysRoles();*/
         //输出登录提示信息
-        System.out.println("管理员 " + userDetails.getName() + " 登录");
+        System.out.println("管理员 " + userDetails.getUserName() + " 登录");
 
         System.out.println("IP :" + getIpAddress(request));
 
