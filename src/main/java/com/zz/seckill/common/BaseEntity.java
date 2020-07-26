@@ -1,4 +1,8 @@
 package com.zz.seckill.common;
 
-public abstract class BaseEntity {
+import javax.persistence.MappedSuperclass;
+
+@MappedSuperclass
+public class BaseEntity {
+
 }

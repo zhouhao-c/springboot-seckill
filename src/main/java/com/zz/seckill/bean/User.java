@@ -12,7 +12,7 @@ import java.util.Collection;
 import java.util.Set;
 
 @Entity
-@Table(name = "ad_operator_info")
+@Table(name = "tb_operator_info")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

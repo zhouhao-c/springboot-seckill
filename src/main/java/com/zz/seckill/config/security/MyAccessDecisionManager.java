@@ -1,4 +1,4 @@
-package com.zz.seckill.config;
+package com.zz.seckill.config.security;
 
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.AccessDeniedException;

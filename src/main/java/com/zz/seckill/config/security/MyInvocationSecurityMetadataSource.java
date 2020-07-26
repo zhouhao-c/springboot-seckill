@@ -1,4 +1,4 @@
-package com.zz.seckill.config;
+package com.zz.seckill.config.security;
 
 import com.zz.seckill.Dao.WebResourceDao;
 import com.zz.seckill.bean.WebResource;

@@ -1,6 +1,6 @@
 package com.zz.seckill.interceptor;
 
-import com.zz.seckill.config.MyAccessDecisionManager;
+import com.zz.seckill.config.security.MyAccessDecisionManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.intercept.InterceptorStatusToken;

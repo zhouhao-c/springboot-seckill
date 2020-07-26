@@ -1,4 +1,4 @@
-package com.zz.seckill.config;
+package com.zz.seckill.config.security;
 
 import com.zz.seckill.handler.LoginSuccessHandler;
 import com.zz.seckill.interceptor.MyFilterSecurityInterceptor;
