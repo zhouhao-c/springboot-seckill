@@ -52,7 +52,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         web.securityInterceptor(myFilterSecurityInterceptor);
         web.privilegeEvaluator(customWebInvocationPrivilegeEvaluator());
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/resources/**","/","/index","/**/*.html");
+        web.ignoring().antMatchers("/resources/**","/**/*.html","/bootstrap/**","/layer/**","/jquery/**");
     }
 
     @Override
@@ -60,7 +60,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/","/index").permitAll()//访问：这些路径 无需登录认证权限
+                .antMatchers( "/","/index","/bootstrap/**","/layer/**","/jquery/**").permitAll()//访问：这些路径 无需登录认证权限
                 .anyRequest().authenticated() //其他所有资源都需要认证，登陆后访问
                 //.antMatchers("/resources").hasAuthority("ADMIN") //登陆后之后拥有“ADMIN”权限才可以访问/hello方法，否则系统会出现“403”权限不足的提示
                 .and()

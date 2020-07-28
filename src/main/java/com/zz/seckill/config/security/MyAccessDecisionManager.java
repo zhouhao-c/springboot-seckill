@@ -15,7 +15,7 @@ import java.util.Iterator;
 public class MyAccessDecisionManager implements AccessDecisionManager {
     @Override
     public void decide(Authentication authentication, Object o, Collection<ConfigAttribute> collection) throws AccessDeniedException, InsufficientAuthenticationException {
-        // TODO  权限 .... >>>
+
         if (collection == null) {
             return;
         }
