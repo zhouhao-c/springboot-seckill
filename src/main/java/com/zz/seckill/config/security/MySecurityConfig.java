@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
+import org.springframework.web.cors.reactive.CorsUtils;
 
 import javax.sql.DataSource;
 
@@ -51,7 +52,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         web.securityInterceptor(myFilterSecurityInterceptor);
         web.privilegeEvaluator(customWebInvocationPrivilegeEvaluator());
         //解决静态资源被拦截的问题
-        web.ignoring().antMatchers("/resources/**");
+        web.ignoring().antMatchers("/resources/**","/","/index","/**/*.html");
     }
 
     @Override
@@ -72,7 +73,9 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .logoutUrl("/admin/logout")
                 .logoutSuccessUrl("/") //退出登录后的默认网址是”/home”
                 .permitAll()
-                .invalidateHttpSession(true);
+                .invalidateHttpSession(true)
+                .and()
+                .headers().frameOptions().disable();
         // .and()
         //.rememberMe()//登录后记住用户，下次自动登录,数据库中必须存在名为persistent_logins的表
         //.tokenValiditySeconds(1209600);

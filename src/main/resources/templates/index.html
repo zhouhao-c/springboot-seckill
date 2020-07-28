@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="../static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet" type="text/css">
 </head>
 <body>
 <div class="container">
@@ -64,7 +65,7 @@
             </div>
         </div>
         <div class="col-md-4 column">
-            <form id="LoginFrom"  method="post" class="form-signin" role="form">
+            <form id="LoginFrom" action="/admin/login"  method="post" class="form-signin" role="form">
                 <h2 class="form-signin-heading"><i class="glyphicon glyphicon-globe"></i> 用户登录</h2>
                 <div class="form-group has-success has-feedback">
                     <input type="text" class="form-control" id="username" name="username" placeholder="请输入登录账号" autofocus>
