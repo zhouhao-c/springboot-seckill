@@ -30,7 +30,7 @@ public class AdminController extends BaseController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/productList")
+    @PostMapping("/productList")
     public String productList(){
         return "admin/productList";
     }

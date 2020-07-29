@@ -16,9 +16,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.access.DefaultWebInvocationPrivilegeEvaluator;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
-import org.springframework.web.cors.reactive.CorsUtils;
+import org.springframework.stereotype.Service;
 
-import javax.sql.DataSource;
 
 /**
  * @EnableWebSecurity: 禁用Boot的默认Security配置，配合@Configuration启用自定义配置（需要扩展WebSecurityConfigurerAdapter）
@@ -60,7 +59,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/","/index","/bootstrap/**","/layer/**","/jquery/**").permitAll()//访问：这些路径 无需登录认证权限
+                .antMatchers( "/**","/index").permitAll()//访问：这些路径 无需登录认证权限
                 .anyRequest().authenticated() //其他所有资源都需要认证，登陆后访问
                 //.antMatchers("/resources").hasAuthority("ADMIN") //登陆后之后拥有“ADMIN”权限才可以访问/hello方法，否则系统会出现“403”权限不足的提示
                 .and()
@@ -75,7 +74,8 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .invalidateHttpSession(true)
                 .and()
-                .headers().frameOptions().disable();
+                .csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
         // .and()
         //.rememberMe()//登录后记住用户，下次自动登录,数据库中必须存在名为persistent_logins的表
         //.tokenValiditySeconds(1209600);
