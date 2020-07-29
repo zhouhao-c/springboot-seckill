@@ -49,15 +49,18 @@ public class AdminController extends BaseController {
     }
 
     @PostMapping("/login")
-    public String login(String userName, String password, Model model, HttpServletRequest request) {
+    public String login(String username, String password, Model model, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        User user = userService.findByUserName(userName);
+        User user = userService.findUserName(username);
         if (!passwordEncoder.matches(password, user.getPassword())) {
             model.addAttribute("error", "用户名或密码错误");
+            System.out.println("用户名或密码错误");
+            System.out.println(passwordEncoder.encode("123456"));
             return "index";
         }
         // 这句代码会自动执行咱们自定义的 ```MyUserDetailService.java``` 类
-        Authentication authentication = myAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(userName, password));
+        Authentication authentication = myAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+
         if (!authentication.isAuthenticated()) {
             throw new BadCredentialsException("Unknown username or password");
         }

@@ -59,9 +59,9 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/**","/index").permitAll()//访问：这些路径 无需登录认证权限
+                .antMatchers( "/","/index","/admin/login").permitAll()//访问：这些路径 无需登录认证权限
                 .anyRequest().authenticated() //其他所有资源都需要认证，登陆后访问
-                //.antMatchers("/resources").hasAuthority("ADMIN") //登陆后之后拥有“ADMIN”权限才可以访问/hello方法，否则系统会出现“403”权限不足的提示
+                //.antMatchers("/admin/**").hasAuthority("admin") //登陆后之后拥有“ADMIN”权限才可以访问/hello方法，否则系统会出现“403”权限不足的提示
                 .and()
                 .formLogin()
                 .loginPage("/")//指定登录页是”/”
@@ -89,7 +89,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception{
         //指定密码加密所使用的加密器为passwordEncoder()
         //需要将密码加密后写入数据库
-        auth.userDetailsService(myUserDetailService);//.passwordEncoder(bCryptPasswordEncoder());
+        auth.userDetailsService(myUserDetailService).passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Bean
@@ -107,4 +107,6 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
+
+
 }

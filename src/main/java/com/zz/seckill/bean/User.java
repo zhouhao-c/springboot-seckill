@@ -13,7 +13,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_user")
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseEntity {
@@ -41,4 +40,43 @@ public class User extends BaseEntity {
 
     private String remoteAddr;
 
+    public String getOderId() {
+        return oderId;
+    }
+
+    public void setOderId(String oderId) {
+        this.oderId = oderId;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public String getRemoteAddr() {
+        return remoteAddr;
+    }
+
+    public void setRemoteAddr(String remoteAddr) {
+        this.remoteAddr = remoteAddr;
+    }
 }

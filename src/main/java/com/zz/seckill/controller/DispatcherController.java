@@ -14,4 +14,9 @@ public class DispatcherController {
         return "index";
     }
 
+    @RequestMapping("/test")
+    public String test(){
+        return "test";
+    }
+
 }

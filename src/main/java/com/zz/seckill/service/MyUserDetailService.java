@@ -15,16 +15,14 @@ import java.util.*;
 
 @Service
 public class MyUserDetailService implements UserDetailsService {
-    @Autowired
-    private UserService userService;
 
     @Autowired
-    private WebResourceService webResourceService;
+    private UserService userService;
 
     @Override
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         //取得用户
-        com.zz.seckill.bean.User dbuser = userService.findByUserName(userName);
+        com.zz.seckill.bean.User dbuser = userService.findUserName(userName);
         if (dbuser == null) {
             throw new UsernameNotFoundException("UserName " + userName + " not found");
         }
@@ -49,6 +47,7 @@ public class MyUserDetailService implements UserDetailsService {
         List<WebResource> resources = new ArrayList<WebResource>();
         //获取用户的角色
         Set<Role> roles = user.getRoles();
+
         for (Role role : roles) {
             Set<WebResource> res = role.getResources();
             for (WebResource resource : res) {
