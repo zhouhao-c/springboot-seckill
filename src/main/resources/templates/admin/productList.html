@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <link href="/static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
@@ -25,9 +26,6 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <a href="#">Action</a>
-                                </li>
-                                <li>
                                     <a href="#">Another action</a>
                                 </li>
                                 <li>
@@ -48,15 +46,15 @@
                     </ul>
                     <form class="navbar-form navbar-left" role="search">
                         <div class="form-group">
-                            <input type="text" class="form-control" />
-                        </div> <button type="submit" class="btn btn-default">Submit</button>
+                            <input type="text" class="form-control" id="queryText" placeholder="请输入查询条件"/>
+                        </div> <button id="queryBtn" class="btn btn-default">查询</button>
                     </form>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="#">Link</a>
                         </li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown<strong class="caret"></strong></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span sec:authentication="name"></span><strong class="caret"></strong></a>
                             <ul class="dropdown-menu">
                                 <li>
                                     <a href="#">Action</a>
@@ -70,7 +68,7 @@
                                 <li class="divider">
                                 </li>
                                 <li>
-                                    <a href="#">Separated link</a>
+                                    <a href="#" th:href="@{/logout}">注销</a>
                                 </li>
                             </ul>
                         </li>
@@ -79,8 +77,8 @@
 
             </nav>
             <h3 class="text-center text-info">
-                h3. 这是一套可视化布局系统.
-            </h3> <button type="button" class="btn btn-block btn-lg btn-primary">按钮</button>
+                商品展示---管理中心
+            </h3> <button type="button" class="btn btn-block btn-lg btn-primary">添加商品</button><br>
             <table class="table table-bordered table-hover">
                 <thead>
                 <tr>
@@ -94,7 +92,7 @@
                         交付时间
                     </th>
                     <th>
-                        状态
+                        操作
                     </th>
                 </tr>
                 </thead>
@@ -110,7 +108,8 @@
                         01/04/2012
                     </td>
                     <td>
-                        Default
+                        <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
+                        <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
                     </td>
                 </tr>
                 <tr class="success">
@@ -200,4 +199,80 @@
 <script src="/static/jquery/jquery-2.1.1.min.js" th:src="@{/jquery/jquery-2.1.1.min.js}"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </body>
+<script type="text/javascript">
+    var likeflg = false;
+    $(function () {
+        pageQuery(1);
+
+        $("#queryBtn").click(function(){
+            var queryText = $("#queryText").val();
+            if ( queryText !== "" ) {
+                likeflg = true;
+            }
+            pageQuery(1);
+        });
+    });
+
+    function pageQuery(pageno){
+        var jsonData = {"pageno":pageno, "pagesize":9};
+        var index = 0;
+        if (likeflg === true){
+            jsonData.queryText = $("#queryText").val();
+        }
+        $.ajax({
+            type : "POST",
+            url  : "/goodsCategory/pageQuery",
+            data : jsonData,
+            beforeSend : function() {
+                index = layer.load(2, {time: 10*1000});
+            },
+            success : function (result) {
+                layer.close(index);
+                if ( result.success ) {
+                    var pageObj = result.data;
+                    var datas = pageObj.datas;
+
+                    var content = "";
+                    for ( var i = 0; i < datas.length; i++ ) {
+                        var data = datas[i];
+                        content += '<tr>';
+                        content += '  <td>'+(i+1)+'</td>         ';
+                        content += '  <td><input type="checkbox" value="'+data.id+'"></td> ';
+                        content += '  <td>'+data.name+'</td>              ';
+                        content += '  <td>'+data.remark+'</td>            ';
+                        content += '  <td>'+data.orderid+'</td>            ';
+                        content += '  <td>                             ';
+                        content += '      <button type="button" onclick="window.location.href=\'${APP_PATH}/goodsCategory/edit?pageno='+pageno+'&id='+data.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content += '	  <button type="button" onclick="deleteGoodsCategory('+data.id+', \''+data.name+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content += '  </td>';
+                        content += '</tr>';
+                    }
+                    $("#dataBody").html(content);
+
+                    var totalno = pageObj.totalno;
+                    var pageContent = "";
+                    if ( pageno > 1 ) {
+                        pageContent += '<li><a href="#" onclick="pageQuery('+(pageno-1)+')">上一页</a></li>';
+                    }
+                    for ( var i = 1; i <= totalno; i++ ) {
+                        if ( pageno === i ) {
+                            pageContent += '<li class="active"><a href="#">'+i+'</a></li>'
+                        } else {
+                            pageContent += '<li><a href="#" onclick="pageQuery('+i+')">'+i+'</a></li>'
+                        }
+                    }
+                    if ( pageno < totalno ) {
+                        pageContent += '<li><a href="#" onclick="pageQuery('+(pageno+1)+')">下一页</a></li>';
+                    }
+
+                    $(".pagination").html(pageContent);
+                } else {
+                    layer.msg("商品分类信息分页查询失败", {time:2000, icon:5, shift:6}, function(){
+                    });
+                }
+            }
+
+        });
+    }
+</script>
 </html>

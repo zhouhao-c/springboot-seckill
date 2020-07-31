@@ -2,15 +2,12 @@ package com.zz.seckill.bean;
 
 import com.zz.seckill.common.BaseEntity;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
 @Table(name = "tb_role")
-@AllArgsConstructor
-@NoArgsConstructor
 public class Role extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

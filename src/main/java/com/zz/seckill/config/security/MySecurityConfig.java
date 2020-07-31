@@ -59,7 +59,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers( "/","/index","/admin/login").permitAll()//访问：这些路径 无需登录认证权限
+                .antMatchers( "/","/index","/doAjaxLogin","/welcome").permitAll()//访问：这些路径 无需登录认证权限
                 .anyRequest().authenticated() //其他所有资源都需要认证，登陆后访问
                 //.antMatchers("/admin/**").hasAuthority("admin") //登陆后之后拥有“ADMIN”权限才可以访问/hello方法，否则系统会出现“403”权限不足的提示
                 .and()
@@ -69,7 +69,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(loginSuccessHandler()) //登录成功后可使用loginSuccessHandler()存储用户信息，可选。
                 .and()
                 .logout()
-                .logoutUrl("/admin/logout")
+                .logoutUrl("/logout")
                 .logoutSuccessUrl("/") //退出登录后的默认网址是”/home”
                 .permitAll()
                 .invalidateHttpSession(true)
@@ -79,7 +79,7 @@ public class MySecurityConfig extends WebSecurityConfigurerAdapter {
         // .and()
         //.rememberMe()//登录后记住用户，下次自动登录,数据库中必须存在名为persistent_logins的表
         //.tokenValiditySeconds(1209600);
-
+        http.rememberMe().rememberMeParameter("remember");
         http.addFilterBefore(myFilterSecurityInterceptor, FilterSecurityInterceptor.class);
 
 

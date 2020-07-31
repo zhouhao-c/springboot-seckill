@@ -1,18 +1,12 @@
 package com.zz.seckill.bean;
 
 import com.zz.seckill.common.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "tb_web_resource")
-@AllArgsConstructor
-@NoArgsConstructor
 public class WebResource extends BaseEntity{
-
 
     private static final long serialVersionUID = 2529504092312259660L;
     @Id

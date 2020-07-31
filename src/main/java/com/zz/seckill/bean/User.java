@@ -2,19 +2,14 @@ package com.zz.seckill.bean;
 
 import com.zz.seckill.common.BaseEntity;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
-import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Table(name = "tb_user")
 @AllArgsConstructor
-@NoArgsConstructor
 public class User extends BaseEntity {
     /**
      * 主键
