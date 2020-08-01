@@ -5,10 +5,14 @@ import com.zz.seckill.Dao.mapper.GoodsMapper;
 import com.zz.seckill.bean.Goods;
 import com.zz.seckill.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+@Service
+@Transactional
 public class GoodsServiceImpl implements GoodsService {
 
     @Autowired

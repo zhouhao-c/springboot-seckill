@@ -1,5 +1,6 @@
 package com.zz.seckill.controller;
 
+import com.zz.seckill.Dao.mapper.GoodsMapper;
 import com.zz.seckill.bean.Goods;
 import com.zz.seckill.bean.Page;
 import com.zz.seckill.common.util.StringUtil;
@@ -18,6 +19,8 @@ public class AdminController extends AjaxLoginController{
 
     @Autowired
     private GoodsService goodsService;
+
+
 
     @GetMapping("/productList")
     public String productList(){

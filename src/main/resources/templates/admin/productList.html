@@ -92,117 +92,39 @@
                         交付时间
                     </th>
                     <th>
+                        秒杀开始时间
+                    </th>
+                    <th>
+                        秒杀结束时间
+                    </th>
+                    <th>
                         操作
                     </th>
                 </tr>
                 </thead>
-                <tbody>
-                <tr>
-                    <td>
-                        1
-                    </td>
-                    <td>
-                        TB - Monthly
-                    </td>
-                    <td>
-                        01/04/2012
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>
-                        <button type="button" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>
-                    </td>
-                </tr>
-                <tr class="success">
-                    <td>
-                        1
-                    </td>
-                    <td>
-                        TB - Monthly
-                    </td>
-                    <td>
-                        01/04/2012
-                    </td>
-                    <td>
-                        Approved
-                    </td>
-                </tr>
-                <tr class="error">
-                    <td>
-                        2
-                    </td>
-                    <td>
-                        TB - Monthly
-                    </td>
-                    <td>
-                        02/04/2012
-                    </td>
-                    <td>
-                        Declined
-                    </td>
-                </tr>
-                <tr class="warning">
-                    <td>
-                        3
-                    </td>
-                    <td>
-                        TB - Monthly
-                    </td>
-                    <td>
-                        03/04/2012
-                    </td>
-                    <td>
-                        Pending
-                    </td>
-                </tr>
-                <tr class="info">
-                    <td>
-                        4
-                    </td>
-                    <td>
-                        TB - Monthly
-                    </td>
-                    <td>
-                        04/04/2012
-                    </td>
-                    <td>
-                        Call in to confirm
-                    </td>
-                </tr>
+                <tbody id="dataBody">
                 </tbody>
+                <tfoot>
+                <tr >
+                    <td>
+                        <ul class="pagination">
+                        </ul>
+                    </td>
+                </tr>
+                </tfoot>
             </table>
-            <ul class="pagination pagination-lg">
-                <li>
-                    <a href="#">Prev</a>
-                </li>
-                <li>
-                    <a href="#">1</a>
-                </li>
-                <li>
-                    <a href="#">2</a>
-                </li>
-                <li>
-                    <a href="#">3</a>
-                </li>
-                <li>
-                    <a href="#">4</a>
-                </li>
-                <li>
-                    <a href="#">5</a>
-                </li>
-                <li>
-                    <a href="#">Next</a>
-                </li>
-            </ul>
         </div>
     </div>
 </div>
 <script src="/static/jquery/jquery-2.1.1.min.js" th:src="@{/jquery/jquery-2.1.1.min.js}"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
 </body>
-<script type="text/javascript">
+<script type="text/javascript" th:inline="javascript">
+    /*<![CDATA[*/
     var likeflg = false;
     $(function () {
         pageQuery(1);
+
 
         $("#queryBtn").click(function(){
             var queryText = $("#queryText").val();
@@ -221,7 +143,7 @@
         }
         $.ajax({
             type : "POST",
-            url  : "/goodsCategory/pageQuery",
+            url  : "/admin/pageQuery",
             data : jsonData,
             beforeSend : function() {
                 index = layer.load(2, {time: 10*1000});
@@ -237,10 +159,10 @@
                         var data = datas[i];
                         content += '<tr>';
                         content += '  <td>'+(i+1)+'</td>         ';
-                        content += '  <td><input type="checkbox" value="'+data.id+'"></td> ';
                         content += '  <td>'+data.name+'</td>              ';
-                        content += '  <td>'+data.remark+'</td>            ';
-                        content += '  <td>'+data.orderid+'</td>            ';
+                        content += '  <td>'+data.createTime+'</td>            ';
+                        content += '  <td>'+data.startTime+'</td>            ';
+                        content += '  <td>'+data.endTime+'</td>            ';
                         content += '  <td>                             ';
                         content += '      <button type="button" onclick="window.location.href=\'${APP_PATH}/goodsCategory/edit?pageno='+pageno+'&id='+data.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
                         content += '	  <button type="button" onclick="deleteGoodsCategory('+data.id+', \''+data.name+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
@@ -274,5 +196,6 @@
 
         });
     }
+    /*]]>*/
 </script>
 </html>
