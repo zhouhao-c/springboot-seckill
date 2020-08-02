@@ -10,13 +10,17 @@ public class Goods implements Serializable {
     private static final long serialVersionUID = 4192966038347855596L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+
     private String name;
     private int number;
+    @Column(name = "startTime")
     private Timestamp startTime;
+    @Column(name = "endTime")
     private Timestamp endTime;
+    @Column(name = "createTime")
     private Timestamp createTime;
     @Version
     private int version;

@@ -3,7 +3,7 @@
 <mapper namespace="com.zz.seckill.Dao.mapper.GoodsMapper" >
     <select id="queryPageCount" resultType="int">
         select
-        count(*) from t_goods_category
+        count(*) from tb_goods
         <where>
             <if test="queryText != null">
                 and name like concat('%',#{queryText},'%')
@@ -11,14 +11,14 @@
         </where>;
     </select>
 
-    <select id="queryPageData" resultType="com.zh.mall.common.bean.GoodsCategory">
-        select * from t_goods_category
+    <select id="queryPageData" resultType="com.zz.seckill.bean.Goods">
+        select * from tb_goods
         <where>
             <if test="queryText != null">
                 and name like concat('%',#{queryText},'%')
             </if>
         </where>
-        order by createtime desc
+        order by id desc
         limit #{start},#{size};
     </select>
 </mapper>

@@ -9,7 +9,6 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tb_user")
-@AllArgsConstructor
 public class User extends BaseEntity {
     /**
      * 主键

@@ -20,34 +20,23 @@ public class AdminController extends AjaxLoginController{
     @Autowired
     private GoodsService goodsService;
 
-
-
     @GetMapping("/productList")
     public String productList(){
         return "/admin/productList";
     }
-//    @PostMapping("/login")
-//    public String login(String username, String password, Model model, HttpServletRequest request) {
-//        HttpSession session = request.getSession();
-//        User user = userService.findUserName(username);
-//        if (!passwordEncoder.matches(password, user.getPassword())) {
-//            model.addAttribute("error", "用户名或密码错误");
-//            return "index";
-//        }
-//        // 这句代码会自动执行咱们自定义的 ```MyUserDetailService.java``` 类
-//        Authentication authentication = myAuthenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-//
-//        if (!authentication.isAuthenticated()) {
-//            throw new BadCredentialsException("Unknown username or password");
-//        }
-//        SecurityContext securityContext = SecurityContextHolder.getContext();
-//        securityContext.setAuthentication(authentication);
-//        session.setAttribute("SPRING_SECURITY_CONTEXT", SecurityContextHolder.getContext());
-//        session.setAttribute("SESSION_OPERATOR", user);
-//        userService.saveOperateLog(user, request.getRemoteAddr());
-//        return "admin/productList";
-//    }
 
+    @GetMapping("/add")
+    public String add(){
+        return "/admin/add";
+    }
+
+    /**
+     * AJAX分页查询
+     * @param pageno
+     * @param pagesize
+     * @param queryText
+     * @return
+     */
     @ResponseBody
     @PostMapping("/pageQuery")
     public Object pageQuery(Integer pageno,Integer pagesize,String queryText){
@@ -91,6 +80,19 @@ public class AdminController extends AjaxLoginController{
 
             data(page);
             success();
+        }catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
+       return end();
+    }
+
+    @ResponseBody
+    @PostMapping("/insert")
+    public Object insert(){
+        start();
+        try {
+
         }catch (Exception e){
             e.printStackTrace();
             fail();

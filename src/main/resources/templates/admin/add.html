@@ -4,6 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <link href="/static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/bootstrap/css/bootstrap-datetimepicker.min.css}" rel="stylesheet">
+    <title>Title</title>
 </head>
 <body>
 <div class="container">
@@ -76,11 +78,8 @@
                 </div>
 
             </nav>
-            <h3 class="text-center text-info">
-                商品展示---管理中心
-            </h3>
             <div class="row clearfix">
-                <div class="col-md-10 column">
+                <div class="col-md-12 column">
                     <ul class="breadcrumb">
                         <li>
                             <a href="#">Home</a>
@@ -93,46 +92,37 @@
                         </li>
                     </ul>
                 </div>
-                <div class="col-md-2 column">
-                    <a class="btn btn-primary btn-large" href="#" th:href="@{~/admin/add}">添加商品</a>
-                </div>
             </div>
-
-            <table class="table table-bordered table-hover">
-                <thead>
-                <tr>
-                    <th>
-                        编号
-                    </th>
-                    <th>
-                        产品
-                    </th>
-                    <th>
-                        交付时间
-                    </th>
-                    <th>
-                        秒杀开始时间
-                    </th>
-                    <th>
-                        秒杀结束时间
-                    </th>
-                    <th>
-                        操作
-                    </th>
-                </tr>
-                </thead>
-                <tbody id="dataBody">
-                </tbody>
-            </table>
-        </div>
-        <div class="container">
             <div class="row clearfix">
-                <div class="col-md-3 column"></div>
-                <div class="col-md-6 column">
-                    <ul class="pagination">
-                    </ul>
+                <div class="col-md-2 column">
                 </div>
-                <div class="col-md-3 column"></div>
+                <div class="col-md-6 column">
+                    <form>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Password</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                        </div>
+                        <div class="input-group date form-group">
+                            <input type="text" class="form-control" placeholder="Password"/>
+                            <span class="input-group-addon">
+                            <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        <div class="input-group date form-group">
+                            <input type="text" class="form-control" placeholder="Password"/>
+                            <span class="input-group-addon">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </span>
+                        </div>
+                        <button type="submit" class="btn btn-default">Submit</button>
+                    </form>
+                </div>
+                <div class="col-md-4 column">
+                </div>
             </div>
         </div>
     </div>
@@ -140,85 +130,23 @@
 <script src="/static/jquery/jquery-2.1.1.min.js" th:src="@{/jquery/jquery-2.1.1.min.js}"></script>
 <script src="/layer/layer.js" th:src="@{/layer/layer.js}"></script>
 <script src="/static/bootstrap/js/bootstrap.min.js" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap-datetimepicker.min.js}"></script>
+<script th:src="@{/bootstrap/js/bootstrap-datetimepicker.zh-CN.js}"></script>
 
-</body>
-<script type="text/javascript" th:inline="javascript">
-    /*<![CDATA[*/
-    var likeflg = false;
-    $(function () {
-        pageQuery(1);
-
-
-        $("#queryBtn").click(function(){
-            var queryText = $("#queryText").val();
-            if ( queryText !== "" ) {
-                likeflg = true;
-            }
-            pageQuery(1);
-        });
+<script>
+    var today = new Date();
+    var format_td = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    $('.input-group.date').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii',
+        language: 'zh-CN',
+        todayBtn: 'linked',
+        maxView: 3,
+        minView: 1,
+        autoClose: true,
+        minuteStep: 1,
+        startDate: format_td,
+        pickerPosition: 'bottom-right'
     });
-
-    function pageQuery(pageno){
-        var jsonData = {"pageno":pageno, "pagesize":1};
-        var index = 0;
-        if (likeflg === true){
-            jsonData.queryText = $("#queryText").val();
-        }
-        $.ajax({
-            type : "POST",
-            url  : "/admin/pageQuery",
-            data : jsonData,
-            beforeSend : function() {
-                index = layer.load(2, {time: 10*1000});
-            },
-            success : function (result) {
-                layer.close(index);
-                if ( result.success ) {
-                    var pageObj = result.data;
-                    var datas = pageObj.datas;
-
-                    var content = "";
-                    for ( var i = 0; i < datas.length; i++ ) {
-                        var data = datas[i];
-                        content += '<tr>';
-                        content += '  <td>'+(i+1)+'</td>         ';
-                        content += '  <td>'+data.name+'</td>              ';
-                        content += '  <td>'+data.createTime+'</td>            ';
-                        content += '  <td>'+data.startTime+'</td>            ';
-                        content += '  <td>'+data.endTime+'</td>            ';
-                        content += '  <td>                             ';
-                        content += '      <button type="button" onclick="window.location.href=\'${APP_PATH}/goodsCategory/edit?pageno='+pageno+'&id='+data.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content += '	  <button type="button" onclick="deleteGoodsCategory('+data.id+', \''+data.name+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
-                        content += '  </td>';
-                        content += '</tr>';
-                    }
-                    $("#dataBody").html(content);
-
-                    var totalno = pageObj.totalno;
-                    var pageContent = "";
-                    if ( pageno > 1 ) {
-                        pageContent += '<li><a href="#" onclick="pageQuery('+(pageno-1)+')">上一页</a></li>';
-                    }
-                    for ( var i = 1; i <= totalno; i++ ) {
-                        if ( pageno === i ) {
-                            pageContent += '<li class="active"><a href="#">'+i+'</a></li>'
-                        } else {
-                            pageContent += '<li><a href="#" onclick="pageQuery('+i+')">'+i+'</a></li>'
-                        }
-                    }
-                    if ( pageno < totalno ) {
-                        pageContent += '<li><a href="#" onclick="pageQuery('+(pageno+1)+')">下一页</a></li>';
-                    }
-
-                    $(".pagination").html(pageContent);
-                } else {
-                    layer.msg("商品信息分页查询失败", {time:2000, icon:5, shift:6}, function(){
-                    });
-                }
-            }
-
-        });
-    }
-    /*]]>*/
 </script>
+</body>
 </html>
