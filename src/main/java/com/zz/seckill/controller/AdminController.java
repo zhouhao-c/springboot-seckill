@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -89,10 +91,12 @@ public class AdminController extends AjaxLoginController{
 
     @ResponseBody
     @PostMapping("/insert")
-    public Object insert(){
+    public Object insert(Goods goods){
         start();
         try {
-
+            goods.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            goodsService.insertGoodsCategory(goods);
+            success();
         }catch (Exception e){
             e.printStackTrace();
             fail();

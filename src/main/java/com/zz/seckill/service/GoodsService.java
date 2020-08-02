@@ -9,4 +9,6 @@ public interface GoodsService {
     int queryPageCount(Map<String, Object> paramMap);
 
     List<Goods> queryPageData(Map<String, Object> paramMap);
+
+    void insertGoodsCategory(Goods goods);
 }

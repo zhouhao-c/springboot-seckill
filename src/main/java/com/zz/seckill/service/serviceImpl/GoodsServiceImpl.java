@@ -30,4 +30,9 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsMapper.queryPageData(paramMap);
     }
 
+    @Override
+    public void insertGoodsCategory(Goods goods) {
+        goodsDao.save(goods);
+    }
+
 }

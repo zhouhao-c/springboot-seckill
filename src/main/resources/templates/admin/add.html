@@ -99,26 +99,27 @@
                 <div class="col-md-6 column">
                     <form>
                         <div class="form-group">
-                            <label for="exampleInputEmail1">Email address</label>
-                            <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email">
+                            <label for="gcname">产品</label>
+                            <input type="text" class="form-control" id="gcname" placeholder="产品名称">
                         </div>
                         <div class="form-group">
-                            <label for="exampleInputPassword1">Password</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                            <label for="gcnumber">编号</label>
+                            <input type="text" class="form-control" id="gcnumber" placeholder="产品编号">
                         </div>
                         <div class="input-group date form-group">
-                            <input type="text" class="form-control" placeholder="Password"/>
+                            <input type="text" class="form-control" id="gcstartTime" placeholder="秒杀开始时间"/>
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                         <div class="input-group date form-group">
-                            <input type="text" class="form-control" placeholder="Password"/>
+                            <input type="text" class="form-control" id="gcendTime" placeholder="秒杀结束时间"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
-                        <button type="submit" class="btn btn-default">Submit</button>
+                        <button type="submit" class="btn btn-success" id="insertBtn"><i class="glyphicon glyphicon-plus"></i>发布</button>
+                        <button type="button" class="btn btn-danger" id="reset"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
                     </form>
                 </div>
                 <div class="col-md-4 column">
@@ -146,6 +147,59 @@
         minuteStep: 1,
         startDate: format_td,
         pickerPosition: 'bottom-right'
+    });
+
+    $("#reset").click(function () {
+        $("#gcname").val("");
+        $("#gcnumber").val("");
+        $("#gcstartTime").val("");
+        $("#gcendTime").val("");
+    });
+
+    $("#insertBtn").click(function() {
+        var gcname = $("#gcname").val();
+        if (gcname === "") {
+            layer.msg("商品名称不能为空，请输入", {time: 2000, icon: 5, shift: 6}, function () {
+                // 设置页面焦点
+                $("#gcname").focus();
+            });
+            return false;
+        }
+        var gcnumber = $("#gcnumber").val();
+        if (gcnumber === "") {
+            layer.msg("商品编号不能为空，请输入", {time: 2000, icon: 5, shift: 6}, function () {
+                $("#gcnumber").focus();
+            });
+            return false;
+        }else if (gcnumber.length > 10){
+            layer.msg("编号长度不能大于11，请输入", {time: 2000, icon: 5, shift: 6}, function () {
+                $("#gcnumber").focus();
+            });
+            return false;
+        }
+        var index = 0;
+        $.ajax({
+            type : "POST",
+            url  : "/admin/insert",
+            data : {
+                "name" : gcname,
+                "number" : gcnumber,
+                "startTime" : $("#gcstartTime").val(),
+                "endTime" : $("#gcendTime").val()
+            },
+            beforeSend : function() {
+                index = layer.load(2, {time: 10*1000});
+            },
+            success : function(result) { // 浏览器请求状态：200, 302, 404, 403,500, 503
+                layer.close(index);
+                if ( result.success ) { // 业务成功或者失败
+                    layer.alert("商品信息保存成功",{icon: 6})
+                } else {
+                    layer.msg("商品信息保存失败，请重新输入", {time:2000, icon:5, shift:6}, function(){
+                    });
+                }
+            }
+        });
     });
 </script>
 </body>

@@ -15,13 +15,13 @@ public class Goods implements Serializable {
     private Long id;
 
     private String name;
-    private int number;
+    private String number;
     @Column(name = "startTime")
-    private Timestamp startTime;
+    private String startTime;
     @Column(name = "endTime")
-    private Timestamp endTime;
+    private String endTime;
     @Column(name = "createTime")
-    private Timestamp createTime;
+    private String createTime;
     @Version
     private int version;
 
@@ -41,35 +41,35 @@ public class Goods implements Serializable {
         this.name = name;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 
-    public Timestamp getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Timestamp startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public Timestamp getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Timestamp endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 
-    public Timestamp getCreateTime() {
+    public String getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(Timestamp createTime) {
+    public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }
 
