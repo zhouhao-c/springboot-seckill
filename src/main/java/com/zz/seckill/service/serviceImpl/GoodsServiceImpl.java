@@ -35,4 +35,15 @@ public class GoodsServiceImpl implements GoodsService {
         goodsDao.save(goods);
     }
 
+    @Override
+    public int updateGoods(Goods goods) {
+        return goodsMapper.updateGoods(goods);
+    }
+
+    @Override
+    public Goods queryById(Integer id) {
+        return goodsMapper.queryById(id);
+    }
+
+
 }

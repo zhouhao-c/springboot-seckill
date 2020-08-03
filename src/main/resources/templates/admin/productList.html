@@ -102,10 +102,13 @@
                 <thead>
                 <tr>
                     <th>
-                        编号
+                        序号
                     </th>
                     <th>
                         产品
+                    </th>
+                    <th>
+                        编号
                     </th>
                     <th>
                         交付时间
@@ -183,11 +186,12 @@
                         content += '<tr>';
                         content += '  <td>'+(i+1)+'</td>         ';
                         content += '  <td>'+data.name+'</td>              ';
+                        content += '  <td>'+data.number+'</td>              ';
                         content += '  <td>'+data.createTime+'</td>            ';
                         content += '  <td>'+data.startTime+'</td>            ';
                         content += '  <td>'+data.endTime+'</td>            ';
                         content += '  <td>                             ';
-                        content += '      <button type="button" onclick="window.location.href=\'${APP_PATH}/goodsCategory/edit?pageno='+pageno+'&id='+data.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
+                        content += '      <button type="button" onclick="window.location.href=\'/admin/edit?'+'id='+data.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
                         content += '	  <button type="button" onclick="deleteGoodsCategory('+data.id+', \''+data.name+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content += '  </td>';
                         content += '</tr>';

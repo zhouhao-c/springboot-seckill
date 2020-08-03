@@ -11,4 +11,8 @@ public interface GoodsService {
     List<Goods> queryPageData(Map<String, Object> paramMap);
 
     void insertGoodsCategory(Goods goods);
+
+    int updateGoods(Goods goods);
+
+    Goods queryById(Integer id);
 }

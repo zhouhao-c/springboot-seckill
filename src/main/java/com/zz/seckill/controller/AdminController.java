@@ -7,6 +7,7 @@ import com.zz.seckill.common.util.StringUtil;
 import com.zz.seckill.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -22,14 +23,22 @@ public class AdminController extends AjaxLoginController{
     @Autowired
     private GoodsService goodsService;
 
-    @GetMapping("/productList")
+    @RequestMapping("/productList")
     public String productList(){
         return "/admin/productList";
     }
 
-    @GetMapping("/add")
+    @RequestMapping("/add")
     public String add(){
         return "/admin/add";
+    }
+
+    @RequestMapping("/edit")
+    public String edit(Integer id,Model model){
+        Goods good = goodsService.queryById(id);
+        model.addAttribute("good",good);
+
+        return "/admin/edit";
     }
 
     /**
@@ -104,4 +113,17 @@ public class AdminController extends AjaxLoginController{
        return end();
     }
 
+    @ResponseBody
+    @RequestMapping("/update")
+    public Object update(Goods goods){
+        start();
+        try {
+            int cnt = goodsService.updateGoods(goods);
+            success(cnt==1);
+        }catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
+        return end();
+    }
 }

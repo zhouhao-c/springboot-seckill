@@ -10,4 +10,6 @@ import java.util.Map;
 public interface GoodsMapper {
     int queryPageCount(Map<String, Object> paramMap);
     List<Goods> queryPageData(Map<String, Object> paramMap);
+    int updateGoods(Goods goods);
+    Goods queryById(Integer id);
 }

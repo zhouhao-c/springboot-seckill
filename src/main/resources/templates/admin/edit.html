@@ -100,25 +100,28 @@
                     <form>
                         <div class="form-group">
                             <label for="gcname">产品</label>
-                            <input type="text" class="form-control" id="gcname" placeholder="产品名称">
+                            <input type="text" class="form-control" th:value="${good.name}" id="gcname" placeholder="产品名称">
                         </div>
                         <div class="form-group">
                             <label for="gcnumber">编号</label>
-                            <input type="text" class="form-control" id="gcnumber" placeholder="产品编号">
+                            <input type="text" class="form-control" th:value="${good.number}" id="gcnumber" placeholder="产品编号">
                         </div>
                         <div class="input-group date form-group">
-                            <input type="text" class="form-control" id="gcstartTime" placeholder="秒杀开始时间"/>
+                            <input type="text" class="form-control" th:value="${good.startTime}" id="gcstartTime" placeholder="秒杀开始时间"/>
                             <span class="input-group-addon">
                             <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
                         <div class="input-group date form-group">
-                            <input type="text" class="form-control" id="gcendTime" placeholder="秒杀结束时间"/>
+                            <input type="text" class="form-control" th:value="${good.endTime}" id="gcendTime" placeholder="秒杀结束时间"/>
                             <span class="input-group-addon">
                                 <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
-                        <button type="button" class="btn btn-success" id="insertBtn"><i class="glyphicon glyphicon-plus"></i>发布</button>
+                        <div class="form-group">
+                            <input type="hidden" class="form-control" th:value="${good.id}" id="goodid">
+                        </div>
+                        <button type="button" class="btn btn-success" id="updateBtn"><i class="glyphicon glyphicon-plus"></i>更新</button>
                         <button type="button" class="btn btn-danger" id="reset"><i class="glyphicon glyphicon-refresh"></i> 重置</button>
                     </form>
                 </div>
@@ -157,7 +160,7 @@
         $("#gcendTime").val("");
     });
 
-    $("#insertBtn").click(function() {
+    $("#updateBtn").click(function() {
         var gcname = $("#gcname").val();
         if (gcname === "") {
             layer.msg("商品名称不能为空，请输入", {time: 2000, icon: 5, shift: 6}, function () {
@@ -181,12 +184,13 @@
         var index = 0;
         $.ajax({
             type : "POST",
-            url  : "/admin/insert",
+            url  : "/admin/update",
             data : {
                 "name" : gcname,
                 "number" : gcnumber,
                 "startTime" : $("#gcstartTime").val(),
-                "endTime" : $("#gcendTime").val()
+                "endTime" : $("#gcendTime").val(),
+                "id" : $("#goodid").val(),
             },
             beforeSend : function() {
                 index = layer.load(2, {time: 10*1000});
@@ -194,11 +198,11 @@
             success : function(result) { // 浏览器请求状态：200, 302, 404, 403,500, 503
                 layer.close(index);
                 if ( result.success ) { // 业务成功或者失败
-                    layer.msg("商品信息保存成功", {time:2000, icon:6}, function(){
+                    layer.msg("商品信息修改成功", {time:2000, icon:6}, function(){
                         window.location.href = "/admin/productList";
                     });
                 } else {
-                    layer.msg("商品信息保存失败，请重新输入", {time:2000, icon:5, shift:6}, function(){
+                    layer.msg("商品信息修改失败，请重新输入", {time:2000, icon:5, shift:6}, function(){
                     });
                 }
             }

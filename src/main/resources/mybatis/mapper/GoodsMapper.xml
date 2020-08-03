@@ -18,7 +18,17 @@
                 and name like concat('%',#{queryText},'%')
             </if>
         </where>
-        order by id desc
+        order by create_time desc
         limit #{start},#{size};
     </select>
+    <select id="queryById" resultType="com.zz.seckill.bean.Goods">
+        select * from tb_goods where id=#{id}
+    </select>
+    <update id="updateGoods">
+        update tb_goods
+        set name = #{name}, number = #{number},start_time = #{startTime},end_time = #{endTime}
+        where id = #{id}
+    </update>
+
+
 </mapper>
