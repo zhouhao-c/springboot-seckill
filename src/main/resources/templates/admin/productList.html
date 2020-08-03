@@ -192,7 +192,7 @@
                         content += '  <td>'+data.endTime+'</td>            ';
                         content += '  <td>                             ';
                         content += '      <button type="button" onclick="window.location.href=\'/admin/edit?'+'id='+data.id+'\'" class="btn btn-primary btn-xs"><i class=" glyphicon glyphicon-pencil"></i></button>';
-                        content += '	  <button type="button" onclick="deleteGoodsCategory('+data.id+', \''+data.name+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
+                        content += '	  <button type="button" onclick="deleteGoods('+data.id+', \''+data.name+'\')" class="btn btn-danger btn-xs"><i class=" glyphicon glyphicon-remove"></i></button>';
                         content += '  </td>';
                         content += '</tr>';
                     }
@@ -221,6 +221,37 @@
                 }
             }
 
+        });
+    }
+    function deleteGoods(id,name) {
+        layer.confirm("删除商品信息【"+name+"】，是否继续？",  {icon: 3, title:'提示'}, function(cindex){
+            // 确定
+            var index = 0;
+            $.ajax({
+                type : "POST",
+                url  : "/admin/delete",
+                data : {
+                    "id" : id
+                },
+                beforeSend : function() {
+                    index = layer.load(2, {time: 10*1000});
+                },
+                success : function(result) {
+                    layer.close(index);
+                    if ( result.success ) {
+                        layer.msg("商品信息删除成功", {time:2000, icon:6}, function(){
+                            pageQuery(1);
+                        });
+                    } else {
+                        layer.msg("商品信息删除失败", {time:2000, icon:5, shift:6}, function(){
+                        });
+                    }
+                }
+            });
+            layer.close(cindex);
+        }, function(cindex){
+            // 取消
+            layer.close(cindex);
         });
     }
     /*]]>*/

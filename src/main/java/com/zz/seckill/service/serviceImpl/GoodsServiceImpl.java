@@ -45,5 +45,10 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsMapper.queryById(id);
     }
 
+    @Override
+    public int deleteGoodsById(Integer id) {
+        return goodsMapper.deleteGoodsById(id);
+    }
+
 
 }

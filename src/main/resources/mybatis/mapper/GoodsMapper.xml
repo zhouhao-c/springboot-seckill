@@ -30,5 +30,7 @@
         where id = #{id}
     </update>
 
-
+    <delete id="deleteGoodsById">
+        delete from tb_goods where id=#{id}
+    </delete>
 </mapper>

@@ -126,4 +126,20 @@ public class AdminController extends AjaxLoginController{
         }
         return end();
     }
+
+    @ResponseBody
+    @RequestMapping("/delete")
+    public Object delete(Integer id){
+        start();
+
+        try {
+            int cnt = goodsService.deleteGoodsById(id);
+            success(cnt == 1);
+        }catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
+        return end();
+    }
+
 }

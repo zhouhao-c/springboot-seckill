@@ -12,4 +12,6 @@ public interface GoodsMapper {
     List<Goods> queryPageData(Map<String, Object> paramMap);
     int updateGoods(Goods goods);
     Goods queryById(Integer id);
+
+    int deleteGoodsById(Integer id);
 }
