@@ -50,5 +50,10 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsMapper.deleteGoodsById(id);
     }
 
+    @Override
+    public Goods queryByNumber(String number) {
+        return goodsMapper.queryByNumber(number);
+    }
+
 
 }

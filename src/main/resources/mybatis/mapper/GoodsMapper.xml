@@ -24,6 +24,9 @@
     <select id="queryById" resultType="com.zz.seckill.bean.Goods">
         select * from tb_goods where id=#{id}
     </select>
+    <select id="queryByNumber" resultType="com.zz.seckill.bean.Goods">
+        select * from tb_goods where number=#{number}
+    </select>
     <update id="updateGoods">
         update tb_goods
         set name = #{name}, number = #{number},start_time = #{startTime},end_time = #{endTime}

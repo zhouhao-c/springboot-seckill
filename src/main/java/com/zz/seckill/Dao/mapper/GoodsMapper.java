@@ -14,4 +14,6 @@ public interface GoodsMapper {
     Goods queryById(Integer id);
 
     int deleteGoodsById(Integer id);
+
+    Goods queryByNumber(String number);
 }

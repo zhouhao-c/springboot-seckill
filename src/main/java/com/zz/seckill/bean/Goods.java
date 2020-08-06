@@ -25,6 +25,10 @@ public class Goods implements Serializable {
     @Version
     private int version;
 
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "description_id", referencedColumnName = "id")
+    private Description description;
+
     public Long getId() {
         return id;
     }
@@ -79,5 +83,13 @@ public class Goods implements Serializable {
 
     public void setVersion(int version) {
         this.version = version;
+    }
+
+    public Description getDescription() {
+        return description;
+    }
+
+    public void setDescription(Description description) {
+        this.description = description;
     }
 }

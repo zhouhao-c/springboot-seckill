@@ -1,20 +1,32 @@
 package com.zz.seckill.controller;
 
 import com.zz.seckill.Dao.mapper.GoodsMapper;
+import com.zz.seckill.bean.Description;
 import com.zz.seckill.bean.Goods;
 import com.zz.seckill.bean.Page;
+import com.zz.seckill.common.util.FileUpload;
 import com.zz.seckill.common.util.StringUtil;
 import com.zz.seckill.service.GoodsService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/admin")
@@ -39,6 +51,13 @@ public class AdminController extends AjaxLoginController{
         model.addAttribute("good",good);
 
         return "/admin/edit";
+    }
+
+    @RequestMapping("/addDescription")
+    public String addDescription(String number,Model model) {
+        Goods good = goodsService.queryByNumber(number);
+        model.addAttribute("good",good);
+        return "/admin/addDescription";
     }
 
     /**
@@ -100,17 +119,40 @@ public class AdminController extends AjaxLoginController{
 
     @ResponseBody
     @PostMapping("/insert")
-    public Object insert(Goods goods){
+    public Object insert(Goods goods,Model model){
         start();
         try {
             goods.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             goodsService.insertGoodsCategory(goods);
             success();
+
         }catch (Exception e){
             e.printStackTrace();
             fail();
         }
        return end();
+    }
+
+    @PostMapping("/insertDes")
+    public String insertDes(Description description){
+        MultipartFile imgFile = description.getImgFile();
+        String imgFileName = imgFile.getOriginalFilename();
+        String filePath = "D:\\IDEAworkspace\\springboot-seckill\\src\\main\\resources\\upload\\";
+        String uuid = UUID.randomUUID().toString();
+        String suffix = imgFileName.substring(imgFileName.lastIndexOf("."));
+        String targetFileName = uuid+suffix;
+        File file = new File(filePath+targetFileName);
+        if (!file.getParentFile().exists()) {
+            file.getParentFile().mkdirs();
+        }
+        try {
+            imgFile.transferTo(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String filename = "/upload/"+imgFileName;
+        description.setIconpath(filename);
+        return "/admin/add";
     }
 
     @ResponseBody
@@ -131,7 +173,6 @@ public class AdminController extends AjaxLoginController{
     @RequestMapping("/delete")
     public Object delete(Integer id){
         start();
-
         try {
             int cnt = goodsService.deleteGoodsById(id);
             success(cnt == 1);

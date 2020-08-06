@@ -17,4 +17,6 @@ public interface GoodsService {
     Goods queryById(Integer id);
 
     int deleteGoodsById(Integer id);
+
+    Goods queryByNumber(String number);
 }
