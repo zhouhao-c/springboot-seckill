@@ -11,9 +11,11 @@ public interface GoodsMapper {
     int queryPageCount(Map<String, Object> paramMap);
     List<Goods> queryPageData(Map<String, Object> paramMap);
     int updateGoods(Goods goods);
-    Goods queryById(Integer id);
+    Goods queryById(Long id);
 
     int deleteGoodsById(Integer id);
 
     Goods queryByNumber(String number);
+
+    void insertGoodsCategory(Goods goods);
 }

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MyWebMvcConfigurer implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/upload/**").addResourceLocations("file:D:\\IDEAworkspace\\springboot-seckill\\src\\main\\resources\\upload");
+        registry.addResourceHandler("/upload/**").addResourceLocations("file:D:\\IDEAworkspace\\springboot-seckill\\src\\main\\resources\\upload\\");
     }
 
 }

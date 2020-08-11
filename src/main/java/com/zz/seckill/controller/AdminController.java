@@ -6,6 +6,7 @@ import com.zz.seckill.bean.Goods;
 import com.zz.seckill.bean.Page;
 import com.zz.seckill.common.util.FileUpload;
 import com.zz.seckill.common.util.StringUtil;
+import com.zz.seckill.service.DescriptionService;
 import com.zz.seckill.service.GoodsService;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,8 @@ public class AdminController extends AjaxLoginController{
 
     @Autowired
     private GoodsService goodsService;
+    @Autowired
+    private DescriptionService descriptionService;
 
     @RequestMapping("/productList")
     public String productList(){
@@ -46,17 +49,14 @@ public class AdminController extends AjaxLoginController{
     }
 
     @RequestMapping("/edit")
-    public String edit(Integer id,Model model){
+    public String edit(Long id,Model model){
         Goods good = goodsService.queryById(id);
         model.addAttribute("good",good);
-
         return "/admin/edit";
     }
 
     @RequestMapping("/addDescription")
-    public String addDescription(String number,Model model) {
-        Goods good = goodsService.queryByNumber(number);
-        model.addAttribute("good",good);
+    public String addDescription() {
         return "/admin/addDescription";
     }
 
@@ -107,7 +107,6 @@ public class AdminController extends AjaxLoginController{
             page.setTotalno(totalno);
             page.setPageno(pageno);
             page.setPagesize(pagesize);
-
             data(page);
             success();
         }catch (Exception e){
@@ -123,9 +122,9 @@ public class AdminController extends AjaxLoginController{
         start();
         try {
             goods.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            goods.setDescriptionId(descriptionService.queryId());
             goodsService.insertGoodsCategory(goods);
             success();
-
         }catch (Exception e){
             e.printStackTrace();
             fail();
@@ -150,8 +149,9 @@ public class AdminController extends AjaxLoginController{
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String filename = "/upload/"+imgFileName;
+        String filename = "/upload/"+targetFileName;
         description.setIconpath(filename);
+        descriptionService.insertDescription(description);
         return "/admin/add";
     }
 

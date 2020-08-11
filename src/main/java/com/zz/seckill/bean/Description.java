@@ -4,6 +4,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.persistence.*;
 
+/**
+ * 商品简介表 Goods一对一关联
+ */
 @Entity
 @Table(name = "tb_description")
 public class Description {
@@ -18,6 +21,7 @@ public class Description {
     @Column(name = "iconpath")
     private String iconpath;
 
+    //表示无需创建表字段
     @Transient
     private MultipartFile imgFile;
 

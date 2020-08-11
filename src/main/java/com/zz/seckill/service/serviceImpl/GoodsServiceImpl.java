@@ -2,6 +2,7 @@ package com.zz.seckill.service.serviceImpl;
 
 import com.zz.seckill.Dao.GoodsDao;
 import com.zz.seckill.Dao.mapper.GoodsMapper;
+import com.zz.seckill.bean.Description;
 import com.zz.seckill.bean.Goods;
 import com.zz.seckill.service.GoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public void insertGoodsCategory(Goods goods) {
-        goodsDao.save(goods);
+        goodsMapper.insertGoodsCategory(goods);
     }
 
     @Override
@@ -41,18 +42,13 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public Goods queryById(Integer id) {
+    public Goods queryById(Long id) {
         return goodsMapper.queryById(id);
     }
 
     @Override
     public int deleteGoodsById(Integer id) {
         return goodsMapper.deleteGoodsById(id);
-    }
-
-    @Override
-    public Goods queryByNumber(String number) {
-        return goodsMapper.queryByNumber(number);
     }
 
 

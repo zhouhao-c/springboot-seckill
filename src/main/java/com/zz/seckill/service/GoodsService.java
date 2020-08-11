@@ -1,5 +1,6 @@
 package com.zz.seckill.service;
 
+import com.zz.seckill.bean.Description;
 import com.zz.seckill.bean.Goods;
 
 import java.util.List;
@@ -14,9 +15,8 @@ public interface GoodsService {
 
     int updateGoods(Goods goods);
 
-    Goods queryById(Integer id);
+    Goods queryById(Long id);
 
     int deleteGoodsById(Integer id);
 
-    Goods queryByNumber(String number);
 }

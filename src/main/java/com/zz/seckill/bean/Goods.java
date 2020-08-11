@@ -2,8 +2,10 @@ package com.zz.seckill.bean;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
 
+/**
+ * 待秒杀商品表
+ */
 @Entity
 @Table(name = "tb_goods")
 public class Goods implements Serializable {
@@ -14,6 +16,7 @@ public class Goods implements Serializable {
     @Column(name = "id")
     private Long id;
 
+    private int stock;
     private String name;
     private String number;
     @Column(name = "startTime")
@@ -22,8 +25,11 @@ public class Goods implements Serializable {
     private String endTime;
     @Column(name = "createTime")
     private String createTime;
+
     @Version
     private int version;
+    @Transient
+    private int descriptionId;
 
     @OneToOne(cascade=CascadeType.ALL)
     @JoinColumn(name = "description_id", referencedColumnName = "id")
@@ -91,5 +97,21 @@ public class Goods implements Serializable {
 
     public void setDescription(Description description) {
         this.description = description;
+    }
+
+    public int getDescriptionId() {
+        return descriptionId;
+    }
+
+    public void setDescriptionId(int descriptionId) {
+        this.descriptionId = descriptionId;
+    }
+
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
     }
 }

@@ -90,7 +90,7 @@
                 </div>
                 <div sec:authorize="hasAuthority('MEMBER')">
                     <p>
-                        <a class="btn btn-primary btn-large" href="#" >前往会员中心</a>
+                        <a class="btn btn-primary btn-large" href="#" th:href="@{~/member/productList}">前往会员中心</a>
                     </p>
                 </div>
             </div>

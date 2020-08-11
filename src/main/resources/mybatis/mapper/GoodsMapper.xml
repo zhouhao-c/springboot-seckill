@@ -24,12 +24,14 @@
     <select id="queryById" resultType="com.zz.seckill.bean.Goods">
         select * from tb_goods where id=#{id}
     </select>
-    <select id="queryByNumber" resultType="com.zz.seckill.bean.Goods">
-        select * from tb_goods where number=#{number}
-    </select>
+    <insert id="insertGoodsCategory">
+        insert into tb_goods (name,number,create_time,start_time,end_time,description_id,version,stock) values (
+            #{name},#{number},#{createTime},#{startTime},#{endTime},#{descriptionId},0,#{stock}
+        )
+    </insert>
     <update id="updateGoods">
         update tb_goods
-        set name = #{name}, number = #{number},start_time = #{startTime},end_time = #{endTime}
+        set name = #{name}, number = #{number},start_time = #{startTime},end_time = #{endTime},version=version+1,stock=#{stock}
         where id = #{id}
     </update>
 

@@ -30,14 +30,12 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
         if (resourceMap == null) {
             resourceMap = new HashMap<String, Collection<ConfigAttribute>>();
             List<WebResource> resources = webResourceDao.findAll();
-            System.out.println(resources.toString());
             for (WebResource resource : resources) {
                 Collection<ConfigAttribute> configAttributes = new ArrayList<ConfigAttribute>();
                 ConfigAttribute configAttribute = new SecurityConfig(resource.getValue());
                 configAttributes.add(configAttribute);
                 resourceMap.put(resource.getUrl(), configAttributes);
             }
-            System.out.println(resourceMap.toString());
         }
         LOG.info("security info load success!!");
     }
@@ -46,7 +44,6 @@ public class MyInvocationSecurityMetadataSource implements FilterInvocationSecur
         if (resourceMap == null) loadResourceDefine();
         String requestUrl = ((FilterInvocation) o).getRequestUrl();
         // 返回当前 url  所需要的权限
-        System.out.println(resourceMap.get(requestUrl));
         return resourceMap.get(requestUrl);
     }
 

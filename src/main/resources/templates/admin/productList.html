@@ -44,11 +44,11 @@
                             </ul>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-left" role="search">
+                    <div class="navbar-form navbar-left">
                         <div class="form-group">
                             <input type="text" class="form-control" id="queryText" placeholder="请输入查询条件"/>
                         </div> <button id="queryBtn" class="btn btn-default">查询</button>
-                    </form>
+                    </div>
                     <ul class="nav navbar-nav navbar-right">
                         <li>
                             <a href="#">Link</a>
@@ -85,11 +85,8 @@
                         <li>
                             <a href="#">Home</a>
                         </li>
-                        <li>
-                            <a href="#">Library</a>
-                        </li>
                         <li class="active">
-                            Data
+                            List</a>
                         </li>
                     </ul>
                 </div>
@@ -109,6 +106,9 @@
                     </th>
                     <th>
                         编号
+                    </th>
+                    <th>
+                        库存
                     </th>
                     <th>
                         交付时间
@@ -151,7 +151,6 @@
     $(function () {
         pageQuery(1);
 
-
         $("#queryBtn").click(function(){
             var queryText = $("#queryText").val();
             if ( queryText !== "" ) {
@@ -179,7 +178,6 @@
                 if ( result.success ) {
                     var pageObj = result.data;
                     var datas = pageObj.datas;
-
                     var content = "";
                     for ( var i = 0; i < datas.length; i++ ) {
                         var data = datas[i];
@@ -187,6 +185,7 @@
                         content += '  <td>'+(i+1)+'</td>         ';
                         content += '  <td>'+data.name+'</td>              ';
                         content += '  <td>'+data.number+'</td>              ';
+                        content += '  <td>'+data.stock+'</td>              ';
                         content += '  <td>'+data.createTime+'</td>            ';
                         content += '  <td>'+data.startTime+'</td>            ';
                         content += '  <td>'+data.endTime+'</td>            ';
