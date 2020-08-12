@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zz.seckill.Dao.mapper.OrderMapper" >
+    <insert id="insertOrder">
+        insert into tb_order (code,create_time,good_name,good_number,status,user_telephone,user_name)
+        values (#{code},#{createTime},#{goodName},#{goodNumber},#{status},#{userTelephone},#{userName});
+    </insert>
+    <select id="queryOrderByGoodNumberAndName" resultType="com.zz.seckill.bean.Order">
+        select * from tb_order where good_number = #{number} and user_name = #{userName};
+    </select>
+</mapper>
