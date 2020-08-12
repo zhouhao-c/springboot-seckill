@@ -15,7 +15,8 @@ public interface GoodsMapper {
 
     int deleteGoodsById(Integer id);
 
-    Goods queryByNumber(String number);
 
     void insertGoodsCategory(Goods goods);
+
+    void updateStockById(Long id);
 }

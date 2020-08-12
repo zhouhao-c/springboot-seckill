@@ -1,6 +1,7 @@
 package com.zz.seckill.service.serviceImpl;
 
 import com.zz.seckill.Dao.UserDao;
+import com.zz.seckill.Dao.mapper.UserMapper;
 import com.zz.seckill.bean.User;
 import com.zz.seckill.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +12,17 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public User findUserName(String userName) {
         return userDao.findByUserName(userName);
+    }
+
+    @Override
+    public String queryTelephoneByName(String userName) {
+        return userMapper.queryTelephoneByName(userName);
     }
 
     @Override

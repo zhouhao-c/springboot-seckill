@@ -34,7 +34,10 @@
         set name = #{name}, number = #{number},start_time = #{startTime},end_time = #{endTime},version=version+1,stock=#{stock}
         where id = #{id}
     </update>
-
+    <update id="updateStockById">
+        update tb_goods
+        set stock = stock-1 where id = #{id}
+    </update>
     <delete id="deleteGoodsById">
         delete from tb_goods where id=#{id}
     </delete>

@@ -1,19 +1,28 @@
 package com.zz.seckill.controller;
 
+import ch.qos.logback.core.net.SyslogConstants;
 import com.zz.seckill.bean.Description;
 import com.zz.seckill.bean.Goods;
+import com.zz.seckill.bean.Order;
 import com.zz.seckill.bean.Page;
 import com.zz.seckill.common.BaseController;
 import com.zz.seckill.common.util.StringUtil;
 import com.zz.seckill.service.DescriptionService;
 import com.zz.seckill.service.GoodsService;
+import com.zz.seckill.service.OrderService;
+import com.zz.seckill.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextImpl;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +34,10 @@ public class MemberController extends BaseController {
     private GoodsService goodsService;
     @Autowired
     private DescriptionService descriptionService;
+    @Autowired
+    private OrderService orderService;
+    @Autowired
+    private UserService userService;
 
     @RequestMapping("/productList")
     public String productList(){
@@ -87,6 +100,48 @@ public class MemberController extends BaseController {
             e.printStackTrace();
             fail();
         }
+        return end();
+    }
+
+    @ResponseBody
+    @PostMapping("/killSuccess")
+    public Object killSuccess(Goods goods, HttpSession session){
+        start();
+        SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
+        Goods dbgood = goodsService.queryById(goods.getId());
+        try {
+            Order order = new Order();
+            //order.setCode();
+            order.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+            order.setGoodName(dbgood.getName());
+            order.setGoodNumber(dbgood.getNumber());
+            //获取用户名
+            String userName = ((UserDetails)securityContext.getAuthentication().getPrincipal()).getUsername();
+            order.setUserTelephone(userService.queryTelephoneByName(userName));
+            order.setUserName(userName);
+            //order.setStatus();
+
+            //每个用户限购一次 商品编号goodNumber不能重复
+            Order flg = orderService.queryOrderByGoodNumberAndName(dbgood.getNumber(),userName);
+            if (flg!=null){
+                //商品编号重复
+                fail();
+                data(101);//每个用户商品限购一次
+                return end();
+            }
+
+            int res = orderService.insertOrder(order);
+            if (res>0){
+                //进行异步邮件消息的通知 rabbitMQ+email
+            }
+            success(res>0);
+            //抢购成功商品库存减1
+            goodsService.updateStockById(goods.getId());
+        }catch (Exception e){
+            e.printStackTrace();
+            fail();
+        }
+
         return end();
     }
 }

@@ -51,5 +51,10 @@ public class GoodsServiceImpl implements GoodsService {
         return goodsMapper.deleteGoodsById(id);
     }
 
+    @Override
+    public void updateStockById(Long id) {
+        goodsMapper.updateStockById(id);
+    }
+
 
 }

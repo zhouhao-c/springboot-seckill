@@ -118,14 +118,15 @@
                 <p th:text="${des.introduce}">
                 </p>
                 <p>
-                    <a class="btn btn-primary btn-warning" href="#">抢购>>>></a>
+                    <a class="btn btn-primary btn-warning" href="#" id="kill">抢购>>>></a>
                 </p>
             </div>
             <ul class="list-group">
                 <li class="list-group-item">当前时间：<span id="dateTime"></span></li>
-                <li class="list-group-item">开始时间：<span th:text="${goods.startTime}"></span></li>
-                <li class="list-group-item">结束时间：<span th:text="${goods.endTime}"></span></li>
+                <li class="list-group-item">开始时间：<span th:text="${goods.startTime}" id="start"></span></li>
+                <li class="list-group-item">结束时间：<span th:text="${goods.endTime}" id="end"></span></li>
             </ul>
+            <input type="hidden" th:value="${goods.id}" id="goodid">
         </div>
     </div>
 </div>
@@ -149,6 +150,51 @@
         return fmt;
     }
     setInterval("document.getElementById('dateTime').innerHTML = (new Date()).format('yyyy-MM-dd hh:mm:ss');", 1000);
+
+    $(function () {
+        $("#kill").click(function () {
+            var now = (new Date()).format('yyyy-MM-dd hh:mm:ss');
+            var start = document.getElementById("start").innerHTML;
+            var end = document.getElementById("end").innerHTML;
+
+            var nowDate = now.substring(0,10).split('-');
+            now = nowDate[1]+'-'+nowDate[2]+'-'+nowDate[0]+' '+now.substring(10,19);
+            var startDate = start.substring(0,10).split('-');
+            start = startDate[1]+'-'+startDate[2]+'-'+startDate[0]+' '+start.substring(10,19);
+            var endDate = end.substring(0,10).split('-');
+            end = endDate[1]+'-'+endDate[2]+'-'+endDate[0]+' '+end.substring(10,19);
+            var display_s = (Date.parse(now)-Date.parse(start))/3600/1000;
+            var display_e = (Date.parse(now)-Date.parse(end))/3600/1000;
+
+            var index = 0;
+            if (display_s>0 && display_e<0){
+                $.ajax({
+                    type : "POST",
+                    url  : "/member/killSuccess",
+                    data : {
+                        "id" : $("#goodid").val()
+                    },
+                    beforeSend : function() {
+                        index = layer.load(2, {time: 10*1000});
+                    },
+                    success : function(result) {
+                        layer.close(index);
+                        if ( result.success ) { // 业务成功或者失败
+                            layer.msg("抢购成功", {time:1000, icon:6}, function(){
+                            });
+                        } else {
+                            layer.msg("抢购失败", {time:2000, icon:5, shift:6}, function(){
+                            });
+                        }
+                    }
+                })
+            }else {
+                layer.msg('已过抢购时间或还没有开始！！', {icon: 5});
+            }
+
+
+        })
+    })
 </script>
 
 </html>

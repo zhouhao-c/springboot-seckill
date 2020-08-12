@@ -7,4 +7,6 @@ public interface UserService {
     void saveOperateLog(User user, String remoteAddr);
 
     User findUserName(String userName);
+
+    String queryTelephoneByName(String userName);
 }
