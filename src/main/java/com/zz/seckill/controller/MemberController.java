@@ -1,12 +1,13 @@
 package com.zz.seckill.controller;
 
-import ch.qos.logback.core.net.SyslogConstants;
 import com.zz.seckill.bean.Description;
 import com.zz.seckill.bean.Goods;
 import com.zz.seckill.bean.Order;
 import com.zz.seckill.bean.Page;
 import com.zz.seckill.common.BaseController;
+import com.zz.seckill.common.util.SnowFlake;
 import com.zz.seckill.common.util.StringUtil;
+import com.zz.seckill.enums.SysConstant;
 import com.zz.seckill.service.DescriptionService;
 import com.zz.seckill.service.GoodsService;
 import com.zz.seckill.service.OrderService;
@@ -38,6 +39,7 @@ public class MemberController extends BaseController {
     private OrderService orderService;
     @Autowired
     private UserService userService;
+    private SnowFlake snowFlake = new SnowFlake(2,3);
 
     @RequestMapping("/productList")
     public String productList(){
@@ -111,7 +113,7 @@ public class MemberController extends BaseController {
         Goods dbgood = goodsService.queryById(goods.getId());
         try {
             Order order = new Order();
-            //order.setCode();
+            order.setCode(snowFlake.nextId());
             order.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             order.setGoodName(dbgood.getName());
             order.setGoodNumber(dbgood.getNumber());
@@ -119,7 +121,7 @@ public class MemberController extends BaseController {
             String userName = ((UserDetails)securityContext.getAuthentication().getPrincipal()).getUsername();
             order.setUserTelephone(userService.queryTelephoneByName(userName));
             order.setUserName(userName);
-            //order.setStatus();
+            order.setStatus(SysConstant.OrderStatus.SuccessNotPayed.getCode().byteValue());
 
             //每个用户限购一次 商品编号goodNumber不能重复
             Order flg = orderService.queryOrderByGoodNumberAndName(dbgood.getNumber(),userName);
