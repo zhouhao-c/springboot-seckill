@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <link href="/static/bootstrap/css/bootstrap.min.css" th:href="@{/bootstrap/css/bootstrap.min.css}" rel="stylesheet">
-    <title>Title</title>
+    <title>订单</title>
 </head>
 <body>
 <h2 ></h2>
@@ -127,6 +127,7 @@
                 <li class="list-group-item">结束时间：<span th:text="${goods.endTime}" id="end"></span></li>
             </ul>
             <input type="hidden" th:value="${goods.id}" id="goodid">
+            <input type="hidden" th:value="${goods.number}" id="goodnumber">
         </div>
     </div>
 </div>
@@ -166,11 +167,12 @@
             var display_s = (Date.parse(now)-Date.parse(start))/3600/1000;
             var display_e = (Date.parse(now)-Date.parse(end))/3600/1000;
 
+            var number = $("#goodnumber").val();
             var index = 0;
             if (display_s>0 && display_e<0){
                 $.ajax({
                     type : "POST",
-                    url  : "/member/killSuccess",
+                    url  : "/member/kill",
                     data : {
                         "id" : $("#goodid").val()
                     },
@@ -178,9 +180,11 @@
                         index = layer.load(2, {time: 10*1000});
                     },
                     success : function(result) {
+                        var Obj = result.data;
                         layer.close(index);
                         if ( result.success ) { // 业务成功或者失败
-                            layer.msg("抢购成功", {time:1000, icon:6}, function(){
+                            layer.msg("抢购成功，正在生成订单", {time:1000, icon:6}, function(){
+                                window.location.href="/member/killSuccess?"+"number="+number;
                             });
                         } else {
                             layer.msg("抢购失败", {time:2000, icon:5, shift:6}, function(){

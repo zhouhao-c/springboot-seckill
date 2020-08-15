@@ -91,14 +91,14 @@ public class SnowFlake {
         return System.currentTimeMillis();
     }
 
-        public static void main(String[] args) {
-        SnowFlake snowFlake = new SnowFlake(2, 3);
-
-        long start = System.currentTimeMillis();
-        for (int i = 0; i < 1000000; i++) {
-            System.out.println("当前生成的有序数字串："+snowFlake.nextId());
-        }
-
-        System.out.println("总共耗时："+(System.currentTimeMillis() - start));
-    }
+//        public static void main(String[] args) {
+//        SnowFlake snowFlake = new SnowFlake(5, 5);
+//
+//        long start = System.currentTimeMillis();
+//        for (int i = 0; i < 100000; i++) {
+//            System.out.println("当前生成的有序数字串："+snowFlake.nextId());
+//        }
+//
+//        System.out.println("总共耗时："+(System.currentTimeMillis() - start));
+//    }
 }

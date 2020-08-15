@@ -13,7 +13,7 @@ public class Order {
     @Column(name = "id")
     private Long id;
 
-    private Long code; //订单编号
+    private String code; //订单编号
     private Byte status; //状态
     private String userTelephone;//用户电话
     private String userName;//用户名称
@@ -45,11 +45,11 @@ public class Order {
         this.goodNumber = goodNumber;
     }
 
-    public Long getCode() {
+    public String getCode() {
         return code;
     }
 
-    public void setCode(Long code) {
+    public void setCode(String code) {
         this.code = code;
     }
 

@@ -41,6 +41,13 @@ public class MemberController extends BaseController {
     private UserService userService;
     private SnowFlake snowFlake = new SnowFlake(2,3);
 
+    @RequestMapping("/killSuccess")
+    public String killSuccess(String number,Model model){
+        Order dbOrder = orderService.queryOrderByGoodNumber(number);
+        model.addAttribute("order",dbOrder);
+        return "/member/killSuccess";
+    }
+
     @RequestMapping("/productList")
     public String productList(){
         return "/member/productList";
@@ -106,14 +113,15 @@ public class MemberController extends BaseController {
     }
 
     @ResponseBody
-    @PostMapping("/killSuccess")
+    @PostMapping("/kill")
     public Object killSuccess(Goods goods, HttpSession session){
         start();
+        Order order = new Order();
         SecurityContextImpl securityContext = (SecurityContextImpl) session.getAttribute("SPRING_SECURITY_CONTEXT");
         Goods dbgood = goodsService.queryById(goods.getId());
+        String orderNumber = String.valueOf(snowFlake.nextId());
         try {
-            Order order = new Order();
-            order.setCode(snowFlake.nextId());
+            order.setCode(orderNumber);
             order.setCreateTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
             order.setGoodName(dbgood.getName());
             order.setGoodNumber(dbgood.getNumber());
@@ -134,11 +142,13 @@ public class MemberController extends BaseController {
 
             int res = orderService.insertOrder(order);
             if (res>0){
+                success();
+                //抢购成功商品库存减1
+                goodsService.updateStockById(goods.getId());
                 //进行异步邮件消息的通知 rabbitMQ+email
+
             }
-            success(res>0);
-            //抢购成功商品库存减1
-            goodsService.updateStockById(goods.getId());
+
         }catch (Exception e){
             e.printStackTrace();
             fail();

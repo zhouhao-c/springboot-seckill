@@ -8,4 +8,7 @@
     <select id="queryOrderByGoodNumberAndName" resultType="com.zz.seckill.bean.Order">
         select * from tb_order where good_number = #{number} and user_name = #{userName};
     </select>
+    <select id="queryOrderByGoodNumber" resultType="com.zz.seckill.bean.Order">
+        select * from tb_order where good_number = #{number};
+    </select>
 </mapper>
