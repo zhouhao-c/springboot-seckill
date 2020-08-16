@@ -56,5 +56,10 @@ public class GoodsServiceImpl implements GoodsService {
         goodsMapper.updateStockById(id);
     }
 
+    @Override
+    public int queryStockById(Long id) {
+        return goodsMapper.queryStockById(id);
+    }
+
 
 }

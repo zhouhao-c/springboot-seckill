@@ -8,10 +8,7 @@ import com.zz.seckill.common.BaseController;
 import com.zz.seckill.common.util.SnowFlake;
 import com.zz.seckill.common.util.StringUtil;
 import com.zz.seckill.enums.SysConstant;
-import com.zz.seckill.service.DescriptionService;
-import com.zz.seckill.service.GoodsService;
-import com.zz.seckill.service.OrderService;
-import com.zz.seckill.service.UserService;
+import com.zz.seckill.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextImpl;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,6 +37,9 @@ public class MemberController extends BaseController {
     @Autowired
     private UserService userService;
     private SnowFlake snowFlake = new SnowFlake(2,3);
+
+    @Autowired
+    private RabbitSendService rabbitSendService;
 
     @RequestMapping("/killSuccess")
     public String killSuccess(String number,Model model){
@@ -141,12 +141,18 @@ public class MemberController extends BaseController {
             }
 
             int res = orderService.insertOrder(order);
+            int stock = goodsService.queryStockById(goods.getId());
             if (res>0){
                 success();
                 //抢购成功商品库存减1
-                goodsService.updateStockById(goods.getId());
+                if (stock >= 0){
+                    goodsService.updateStockById(goods.getId());
+                }else {
+                    data(102);//商品库存不足
+                    fail();
+                }
                 //进行异步邮件消息的通知 rabbitMQ+email
-
+                rabbitSendService.sendKillSuccessEmailMsg(orderNumber);
             }
 
         }catch (Exception e){

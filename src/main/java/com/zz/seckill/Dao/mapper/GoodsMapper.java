@@ -19,4 +19,6 @@ public interface GoodsMapper {
     void insertGoodsCategory(Goods goods);
 
     void updateStockById(Long id);
+
+    int queryStockById(Long id);
 }

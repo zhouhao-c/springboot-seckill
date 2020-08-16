@@ -20,4 +20,6 @@ public interface GoodsService {
     int deleteGoodsById(Integer id);
 
     void updateStockById(Long id);
+
+    int queryStockById(Long id);
 }
