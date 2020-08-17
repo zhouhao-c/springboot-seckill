@@ -1,9 +1,6 @@
 package com.zz.seckill.controller;
 
-import com.zz.seckill.bean.Description;
-import com.zz.seckill.bean.Goods;
-import com.zz.seckill.bean.Order;
-import com.zz.seckill.bean.Page;
+import com.zz.seckill.bean.*;
 import com.zz.seckill.common.BaseController;
 import com.zz.seckill.common.util.SnowFlake;
 import com.zz.seckill.common.util.StringUtil;
@@ -127,8 +124,10 @@ public class MemberController extends BaseController {
             order.setGoodNumber(dbgood.getNumber());
             //获取用户名
             String userName = ((UserDetails)securityContext.getAuthentication().getPrincipal()).getUsername();
-            order.setUserTelephone(userService.queryTelephoneByName(userName));
+            User dbUser = userService.queryUserByName(userName);
+            order.setUserTelephone(dbUser.getTelephone());
             order.setUserName(userName);
+            order.setUserEmail(dbUser.getEmail());
             order.setStatus(SysConstant.OrderStatus.SuccessNotPayed.getCode().byteValue());
 
             //每个用户限购一次 商品编号goodNumber不能重复

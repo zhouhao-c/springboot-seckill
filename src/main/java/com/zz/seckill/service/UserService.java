@@ -8,5 +8,6 @@ public interface UserService {
 
     User findUserName(String userName);
 
-    String queryTelephoneByName(String userName);
+
+    User queryUserByName(String userName);
 }

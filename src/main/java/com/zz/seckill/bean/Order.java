@@ -15,11 +15,20 @@ public class Order {
 
     private String code; //订单编号
     private Byte status; //状态
+    private String userEmail;//用户邮箱
     private String userTelephone;//用户电话
     private String userName;//用户名称
     private String goodName;//商品名称
     private String goodNumber;//商品编号
     private String createTime;//创建时间
+
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
 
     public String getUserName() {
         return userName;

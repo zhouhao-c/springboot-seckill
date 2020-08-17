@@ -34,6 +34,15 @@ public class User extends BaseEntity {
 
     private String remoteAddr;
     private String telephone;
+    private String email;
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
     public String getTelephone() {
         return telephone;
