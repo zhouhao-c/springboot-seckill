@@ -29,18 +29,18 @@ public class RabbitSendService {
     /**
      * 秒杀成功异步发送邮件通用消息
      */
-    public void sendKillSuccessEmailMsg(String order){
-        log.info("秒杀成功异步发送邮件通用消息-准备发送消息：{}",order);
+    public void sendKillSuccessEmailMsg(String orderCode){
+        log.info("秒杀成功异步发送邮件通用消息-准备发送消息：{}",orderCode);
 
         try {
-            Order dbOrder =  orderService.queryOrderByGoodNumber(order);
-            if (dbOrder!=null){
+            Order dbOrder =  orderService.queryOrderByGoodCode(orderCode);
+            if (dbOrder != null){
                 //TODO：rabbitmq发送消息的逻辑
                 rabbitTemplate.setMessageConverter(new Jackson2JsonMessageConverter());
                 rabbitTemplate.setExchange(env.getProperty("mq.kill.item.success.email.exchange"));
                 rabbitTemplate.setRoutingKey(env.getProperty("mq.kill.item.success.email.routing.key"));
 
-                //TODO：将info充当消息发送至队列
+                //TODO：将dbOrder充当消息发送至队列
                 rabbitTemplate.convertAndSend(dbOrder, new MessagePostProcessor() {
                     @Override
                     public Message postProcessMessage(Message message) throws AmqpException {
@@ -53,7 +53,7 @@ public class RabbitSendService {
             }
 
         }catch (Exception e){
-            log.info("秒杀成功异步发送邮件通用消息-发生异常，消息为：{}",order,e.fillInStackTrace());
+            log.info("秒杀成功异步发送邮件通用消息-发生异常，消息为：{}",orderCode,e.fillInStackTrace());
         }
     }
 

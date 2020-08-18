@@ -1,13 +1,14 @@
 package com.zz.seckill.bean;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * 秒杀成功订单表
  */
 @Entity
 @Table(name = "tb_order")
-public class Order {
+public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -92,5 +93,20 @@ public class Order {
 
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", status=" + status +
+                ", userEmail='" + userEmail + '\'' +
+                ", userTelephone='" + userTelephone + '\'' +
+                ", userName='" + userName + '\'' +
+                ", goodName='" + goodName + '\'' +
+                ", goodNumber='" + goodNumber + '\'' +
+                ", createTime='" + createTime + '\'' +
+                '}';
     }
 }

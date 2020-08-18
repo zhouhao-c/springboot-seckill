@@ -8,4 +8,6 @@ public interface OrderService {
     Order queryOrderByGoodNumberAndName(String number, String userName);
 
     Order queryOrderByGoodNumber(String number);
+
+    Order queryOrderByGoodCode(String orderCode);
 }

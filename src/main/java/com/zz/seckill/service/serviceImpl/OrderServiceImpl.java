@@ -28,4 +28,9 @@ public class OrderServiceImpl implements OrderService {
         return orderMapper.queryOrderByGoodNumber(number);
     }
 
+    @Override
+    public Order queryOrderByGoodCode(String orderCode) {
+        return orderMapper.queryOrderByGoodCode(orderCode);
+    }
+
 }
